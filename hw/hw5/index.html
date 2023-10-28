@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Homework 5</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+</head>
+<body>
+    <h3>
+        Name: Yueyi Yang
+        <br>
+        NetID: yy2225
+    </h3>
+    <ul>
+        <li>
+            <strong>Problem 1:</strong>
+            <ul>
+                <li>
+                    A:
+                    <br>
+                    <strong>Problem: </strong>Is this a sequential or a divergent scale?
+                    <br>
+                    Answer: It is a divergent scale.
+                </li>
+                <li>
+                    <strong>Problem: </strong>Is this an effective sequential/divergent color scale? Justify your answer in 1-2 sentences.
+                    <br>
+                    Answer: It depends. It is an effective divergent color scale to use when your data has a ``middle``.
+                </li>
+                <li>
+                    B:
+                    <br>
+                    <strong>Problem: </strong>Assume that this scale is applied to a numeric data attribute ranging from -1 to 1 representing sentiment (e.g. dislike to neutral to like), with negative values moving towards the dark blue end and positive values moving towards the white end. Middle values remain sky blue. Is this an effective color scale for this task? Justify your answer in 1-2 sentences.
+                    <br>
+                    Answer: Yes it is. Because it is a sequential scale, we can clearly sense the change of colors from -1 to 1.
+                </li>
+                <li>
+                    C:
+                    <br>
+                    <strong>Problem: </strong>To most individuals, this color scale will appear to vary in both hue and luminosity (grey-ish blue on the left, lime green on the right). However, the hue channel of this scale is not visible for individuals with certain color vision deficiencies. This poses usability issues. Use an online color blindness image testing tool to identify and list which kind(s) of anomalous trichromatic and/or dichromatic color vision deficiencies (e.g. deuteranomaly) would cause a loss of perceivable hue variation (file included in ZIP).
+                    [ If you have color vision deficiencies that make the scale`s hue hard to interpret, you have two choices: You can either self-disclose your color vision deficiency and describe what the image looks like to you, or ask a trusted friend to describe what they see to you. ]
+                    <br>
+                    Answer: I chose this website <a href="https://www.color-blindness.com/coblis-color-blindness-simulator">Coblis--Color Blindness Simulator</a>.
+                    <br>
+                    Monochromacy/Achromatopsia and Blind/Tritanopia.
+                </li>
+                <li>
+                    D:
+                    <br>
+                    <strong>Problem: </strong>A data scientist is designing a choropleth map for a new continuous, numeric county-by-county `average life expectancy` data attribute they developed. Would you recommend that they use this rainbow scale to color the counties in their map? Justify your answer in 1-2 sentences.
+                    <br>
+                    Answer: No, I would not recommend using a rainbow scale for a choropleth map of average life expectancy data. Rainbow scales can be problematic because they introduce unnecessary perceptual distortions and can mislead viewers due to their non-uniform perceptual spacing. It's better to use a sequential color scale with a limited range of colors that are perceptually distinguishable and intuitive for conveying the data accurately and effectively.
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <p id="d2">
+        <strong>Problem 2:</strong>
+        <br>
+        For this problem we have processed a public dataset of NCAA Basketball games from the 2021-22 and 2022-23 seasons (aggregated from data scraped by Luke Benz). Our goal is to recreate a popular heatmap visualization made by Max Woolf. The dataset contains 159,410 successful and unsuccessful shots made by players whose position was logged during the game. You can see our final version of it to the right. Areas of high activity in the game are colored yellow and areas of low activity are black. Marks are individual <rect> squares and channels are aligned position and color hue+luminosity.
+            <br>
+            Compare that result with your previous visualization. Please describe one advantage and one disadvantage of the logarithmic color scale as compared to the original linear scale.
+            <br>
+            <strong>Answer:</strong>
+            <br>
+            Advantage:
+            <br>
+            Highlighting Details: The logarithmic scale can help highlight details in the data that might be overshadowed in a linear scale. In this case, it can make subtle differences in the "log_attempt" values more visible, especially for data points with lower values.
+            <br>
+            Disadvantage:
+            <br>
+            Interpretation Complexity: Logarithmic scales can be harder to interpret for viewers who are not familiar with them. The color differences may not correspond directly to linear differences in the data, which can lead to misinterpretation if not explained properly.
+            <br>
+            <svg id="heatmap" width="500" height="500" style="background-color: black"></svg>
+            <script>
+
+                //load the data by using asynchronous request
+                d3.csv("NCAA_shots.csv").then((data) =>{
+                    console.log(data); 
+                    //Use console.log() to check out the data you’re using for this problem.
+                    //You will notice that each element contains x and y values for making the colored rectangles at various positions in the visualization.
+
+
+                //create a new sequential color scale for the heatmap
+                //const attemptExtent = d3.extent(data, (d) => +d.attempt);
+                //use log_attempt instead of attempt for the color scale
+                const logAttemptExtent = d3.extent(data, (d) => +d.log_attempt);
+
+                //let colorScale = d3.scaleSequential()
+                let logColorScale = d3.scaleSequential()
+                    //.domain(attemptExtent)
+                    .domain(logAttemptExtent)
+                    .interpolator(d3.interpolateViridis); //Use the d3.interpolateViridis color scale in your sequential scale
+
+                //create new rect elements for each row using forEach
+                const svg = d3.select("#heatmap");
+
+                data.forEach((d) => {
+                    svg.append("rect")
+                        .attr("x", d.x * 5)//原始数据的 x 坐标范围在 0 到 100 之间，而 SVG 元素的宽度只有 500
+                        .attr("y", d.y * 5)
+                        .attr("width", 5)
+                        .attr("height", 5)
+                        //.attr("fill", colorScale(+d.attempt));
+                        .attr("fill", logColorScale(+d.log_attempt));
+
+                })
+
+                });
+
+
+            </script>
+    </p>
+    <p id="d3">
+        <strong>Problem 3:</strong>
+        <br>
+        For this problem, we will be making use of a 
+        color space available in d3, HSL. This is another 
+        name for the traditional HSV (hue, saturation, 
+        value) color space, which has issues but does 
+        produce visually appealing color charts. You will 
+        design an interactive tool for exploring the color 
+        space, giving you a sense for its benefits and 
+        problems in displaying colors perceptually.
+        <br>
+        <input
+                type="range"
+                id="lightnessSlider"
+                min="0"
+                max="100"
+                step="1"
+                value="50"
+        />
+        <!-- type="range" 表示创建一个滑块输入元素。
+            id="lightnessSlider" 为输入元素指定了一个唯一的标识符，以便您可以在 JavaScript 中选择和操作它。
+            min="0" 表示滑块的最小值为 0。
+            max="100" 表示滑块的最大值为 100。
+            step="1" 表示滑块的步进值为 1，也就是每次拖动滑块时值的变化幅度为 1。
+            value="50" 表示滑块的初始值为 50。这意味着当页面加载时，滑块的位置将位于中间位置，值为 50。 -->
+            
+        <svg id="colorSpace" width="420" height="420"></svg>
+        <script>
+            //creates a single array containing Objects
+            const colorArray = [];
+
+            // Loop through "h" values (0 to 360 in multiples of 18. So 21 different h values)
+            for (let h = 0; h <= 360; h += 18){
+                // Loop through "s" values (0 to 100 in multiples of 5. So 21 s)
+                // giving you 21 different "s" values for every "h"
+                for (let s = 0; s <= 100; s += 5){
+                    // Create an object with "h" and "s" properties
+                    const colorObject = { h, s };
+                    // s(饱和度，一般是从0到1) will control the saturation(color intensity)
+                    // h(色相，从0到360度)will control the hug angle(0 to 360 degrees around a circle)
+                    colorArray.push(colorObject);
+                    //a total of 441(21x21) objects in my final array 
+                }
+            }
+            console.log(colorArray);
+
+            // set up the svg
+            const svg = d3.select("#colorSpace");
+            const width = svg.attr("width");
+            const height = svg.attr("height");
+
+            const xScale = d3.scaleLinear()
+                             .domain([0, 360])
+                             .range([20, width - 20]);
+
+            const yScale = d3.scaleLinear()
+                             .domain([0, 100])
+                             .range([height - 20, 20]);
+
+            // create a function to show circles
+            function showCircles(lightness){
+                // use a d3 data join( (i.e. selectAll(), data(), join(), attr(), and style() functions))
+                // to create or modify one circle for each object in the list
+                const circles = svg
+                    .selectAll("circle")
+                    .data(colorArray, (d) => JSON.stringify(d));
+
+                //enter new circles
+                circles
+                    .enter()
+                    .append("circle")
+                    .attr("r", 10)
+                    .merge(circles) //用于将新创建的元素和已经存在的元素合并在一起，以确保一致性
+                    .attr("cx", (d) => xScale(d.h))
+                    .attr("cy", (d) => yScale(d.s))
+                    .style("fill", (d) => {
+                        const color = d3.hsl(d.h, d.s / 100, lightness / 100);
+                        return color.toString();
+
+                    });
+
+                circles.exit().remove();
+            }
+            // test
+            //showCircles(80);
+
+            // finally, add a slider input (docs) so the user can choose a lightness value.
+
+            // add the html code for the slider input and set a default value
+            
+            
+
+            const slider = d3.select("#lightnessSlider")
+
+            slider.on("input", function(){
+                // get the current value of the slider
+                const lightness = this.value;
+
+                showCircles(lightness);
+
+            });
+
+
+
+        </script>
+    </p>
+
+</body>

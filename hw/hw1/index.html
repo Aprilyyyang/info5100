@@ -1,0 +1,194 @@
+<html>
+<head>
+	<title>HW1</title>
+</head>
+<body>
+ 	<p id="p1">
+ 		Problem 1: 
+		<br>
+		Identify and provide examples for various JavaScript types.
+		<br>
+		Answer: 
+		<br>
+		(a) avacado is NOT a canonical js type.
+		<br>
+		(b) array is NOT a canonical js type.
+		<br>
+		(c) boolean is a canonical js type
+		<br>
+		(d) object is a canonical js type
+		<br>
+		(e) Unicode is NOT a canonical js type.
+		<br>
+		(f) string is a canonical js type.
+		<br>
+		(h) int is NOT a canonical js type.
+        <br>
+        (i) number is a canonical js type.
+        <br>
+        (j) class is NOT a canonical js type.
+        <br>
+        (k) regex is NOT a canonical js type.
+        <br>
+        (l) char is NOT a canonical js type.
+        <br>
+        (m) undefined is a canonical js type.
+        <br>
+        (n) pointer is NOT a canonical js type.
+        <br>
+        (o) NaN is NOT a canonical js type.
+        <br>
+		
+ 		<script>
+			console.log("------problem 1--------")
+ 			// a) avacado
+ 			// A：not a canonical js type.
+			console.log("a) avacado is NOT a canonical js type");
+ 			// b) array
+ 			// B：a canonical js type
+ 			console.log("b) array is NOT a canonical js type");
+ 			console.log([1,2,3]);
+ 			console.log(typeof([1,2,3]));
+			// c) boolean
+			// A
+			console.log("c) boolean is a canonical js type");
+			console.log(true);
+			console.log(typeof(true));
+			// d) object
+			// A
+			console.log("d) object is a canonical js type");
+			console.log({ key: 'value' });
+			console.log(typeof({ key: 'value' }));
+			// e) unicode is not a canonical js type.
+			console.log("e) unicode is NOT a canonical js type");
+			// f) string is a canonical js type.
+			console.log("f) string is a canonical js type.");
+			console.log('hello info5100');
+			console.log(typeof('hello info5100')) ;
+			// g) function is A
+			console.log("g) function is a canonical js type.");
+			console.log(function(){ console.log('this is the example of function)')});
+			console.log(typeof(function(){ console.log('this is the example of function)')}));
+			// h) int is not a canonical js type.
+			console.log("h) int is NOT a canonical js type.");
+			//i
+			console.log("i) number is a canonical js type");
+			console.log(42);
+			console.log(typeof(42));
+			//j
+			console.log("j) class is NOT a canonical js type");
+			//k
+			console.log("k) regex is a canonical js type");
+			console.log(/pattern/);
+			console.log(typeof(/pattern/));
+			//l
+			console.log("l) char is NOT a canonical js type");
+			//m
+			console.log("m) undefined is a canonical js type");
+			console.log(undefined);
+			console.log(typeof(undefined));
+			//n
+			console.log("n) pointer is NOT a canonical js type.");
+			//o
+			console.log("o) NaN is NOT a canonical js type");
+			console.log(NaN);
+			console.log(typeof(NaN));
+
+
+ 		</script>
+ 	</p>
+	<p id ="p2">
+		Problem 2:
+		<br>
+		Null is a canonical Javascript type, but it has some unusual or unexpected typeof() behavior. In 1-2 sentences, explain the unusual behavior that it has.
+		<br>
+		Answer: 
+		<br>
+		When using typeof(Null), it returns object instead of null, which might lead to confusion.
+		<script>
+			console.log("------problem 2--------");
+			console.log("When using typeof(Null), it returns object instead of null, which might lead to confusion.")
+			console.log(null);
+			console.log(typeof(null));
+		</script>
+	</p>
+	<p id ="p3">
+		Problem 3: 
+		<br>
+		First, in 1-2 sentences, please define type coercion. Then, in your p tag please provide
+        two examples where type coercion produces an answer that is unusual or unexpected (i.e.,
+        different from Python output or a case where Python would throw an exception). For each
+        sample, briefly explain why it is unexpected. Then, in the
+        script section put both of your code examples into a console.log() statement so we can see the result(e.g.,
+        console.log("apple" + "orange"))
+		<br>
+		Answer: 
+		<br>
+		Type coercion in JavaScript refers to the automatic conversion of values from one data type to another 
+		during operations, comparisons, or assignments. It allows different data types to be used together without 
+		explicitly converting them.
+		<br>
+		example 1: 	
+		<br>
+		<code>console.log("5" + 3)</code> : output 53;
+		<br>
+		In the expression "5" + 3, you are attempting to concatenate a string ("5") with a number (3). 
+		JavaScript's behavior in this case is to perform type coercion by converting the number 3 into 
+		a string and then concatenating it with the existing string "5". As a result, the expression is evaluated as the string "53".
+		example 2: 
+		<br>
+		<code>console.log([] == 0)</code> :output true;
+		<br>
+		In JavaScript, when you use the == equality operator to compare values of different types, JavaScript attempts to perform type coercion to make the comparison meaningful. In this specific case, you are trying to compare an empty array ([]) with the number 0.
+		JavaScript's type coercion rules come into play here. When comparing an array with a number using ==, JavaScript attempts to convert both operands to a common type before making the comparison. In this case, the array [] is coerced into a string (an empty string), and the number 0 remains a number. Now, JavaScript tries to compare a string with a number. To make the comparison possible, JavaScript converts the string to a number. An empty string, when converted to a number, becomes 0.
+		As a result, the expression [] == 0 evaluates to true, which might be counterintuitive. The comparison is effectively transformed to 0 == 0, which is true.
+		<script>
+			console.log("------problem 3--------");
+			console.log("Type coercion in JavaScript refers to the automatic conversion of values from one data type to another during operations, comparisons, or assignments. It allows different data types to be used together without explicitly converting them.")
+			//example 1
+			console.log("5" + 3);
+			//example 2
+			console.log([] == 0);
+		</script>
+	</p>
+	<p id="p4">
+		Problem 4:
+		<br>
+		Create a recursive function fib(n) to calculate the nth number in the Fibonacci sequence.
+		<br>
+		Answer: shown in the script.
+		<script>
+			console.log("------problem 4--------");
+		  function fib(n) {
+			if (n <= 0) {
+			  return 0;
+			} else if (n === 1) {
+			  return 1;
+			} else {
+			  return fib(n - 1) + fib(n - 2);
+			}
+		  }
+	  
+		  // Test the function
+		  console.log("--Test the function--");
+		  console.log(fib(-2)); // Output: 3 (as 3 is the 4th number in the Fibonacci sequence)
+		  console.log(fib(0));
+		  console.log(fib(1));
+		  console.log(fib(4));
+		  console.log(fib(7));
+		  console.log(fib(9));
+		</script>
+	  </p>
+	  <p id ="p5">
+		Problem 5: 
+		<br>
+		the course policy on late and unreadable work outlined in the syllabus, which is linked from the course website.
+		<br>
+		Answer: as shown in the script.
+		<br>
+		<script>
+			console.log("------problem 5--------")
+			console.log("Late submissions will receive a score of 0. Submissions that cannot be decompressed, contain incorrect files, or lack essential files will also receive a score of 0, regardless of circumstances. This includes situations where you believe your submission is correct but inadvertently omitted a file or submitted a previous assignment. To avoid a 0 score, please re-download your submissions from CMS for verification.Given the strict late policy, you will have a total of 5 slip days for deadline extensions (see details below in the document). Additionally, when calculating final class grades, the two lowest homework scores will be dropped, including those with a score of 0.")
+		</script>
+	</p>
+	</body></html>

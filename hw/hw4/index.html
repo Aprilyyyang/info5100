@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Homework 4</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+  
+    .gridlines line {
+      stroke: #bbb;
+    }
+    
+    .gridlines .domain {
+      stroke: none;
+    }
+  
+    </style>
+</head>
+<body>
+    <h3>
+        Name: Yueyi Yang
+        <br>
+        NetID: yy2225
+    </h3>
+  <p id="d1">
+    Problem 1:
+    <br>
+        Answer:
+    <br>
+        (A)
+    <br>
+        Marks: Polygons
+    <br>
+        Channels: Color Hue, Geographic position(Aera), Shape
+    <br>
+        (B)
+    <br>
+        Marks: Circles
+    <br>
+        Channels: Aligned Position (horizontal and vertical), Color Hue
+  </p> 
+  <p id="p3">
+    Problem 3: 
+    <br>
+    In this problem we`re going to plot some data about <a herf="https://spectrum.ieee.org/the-multiple-lives-of-moores-law">Moore`s Law</a>, which predicted that 
+    the number of transistors packed into computer chips would double on a yearly basis. We 
+    will make a scatterplot of graphics processing units (GPUs) over the past 20 years using a 
+    <a herf="https://chip-dataset.vercel.app/">dataset</a> gathered by Sun et al. hoping to see this trend in action.
+    <br>
+    The file chip_dataset.json contains a JSON block that defines an array of objects. Each 
+    object represents a particular GPU that was or is commercially available. They have several
+    data attributes, but relevant for us will be "Release Day", or the number of days the chip was 
+    released after 3/1/2000 (the earliest date in the file), and "Transistors(million)", the 
+    number of transistors on the chip in millions.
+    <br>
+    <script>
+        d3.json("chip_dataset.json").then((data) => {
+
+            const width = 500;
+            const height = 500;
+            const margins = { top:10, right:10, bottom:50, left:50 };
+            const chartWidth = width - margins.left - margins.right;
+            const chartHeight = height - margins.top - margins.bottom;
+
+            //create an svg element
+            const svg = d3.select("#p3")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+
+            //create a <g> tag for the chart area with margins
+            let chartArea = svg.append("g")
+                               .attr('transform',`translate(${margins.left},${margins.top})`)
+
+
+            // Extract the extents of "Release Day" and "Transistors(million)"
+            const releaseDayExtent = d3.extent(data, d => d['Release Day'] );
+            const transistorsExtent = d3.extent(data, d => d['Transistors(million)'] );
+
+            const xScale = d3.scaleLinear()
+                            .domain(releaseDayExtent)
+                            .range([0, chartWidth]);
+
+            const yScale = d3.scaleLog()    //change from Linear to Log
+                            .domain(transistorsExtent)
+                            .range([chartHeight, 0]);
+
+            //create a d3.axisLeft() object for the y-axis
+            let yAxis = d3.axisLeft(yScale)
+
+            // Append a new <g> tag for the y-axis to SVG and position it
+            let yAxisGroup = chartArea.append("g")
+                                .attr("transform", `translate(-10, 0)`)//we should also change ygridlinesgroup
+            
+            // Use .call() to add the y-axis to the <g> tag
+            yAxisGroup.call(yAxis);
+
+            // Create a second d3.axisLeft() object for y-axis gridlines
+            const yGridlines = d3.axisLeft(yScale)
+                                .tickSize(-chartWidth) // Adjust the tick size to cover the chart area
+                                .tickFormat(""); // Remove tick labels
+
+
+            // Append a new <g> tag for y-axis gridlines with the "gridlines" class
+            const yGridlinesGroup = chartArea.append("g")
+                                        .attr("class", "gridlines")
+                                        .attr("transform", `translate(-10, 0)`);//change with yaxisgroup
+                                        //.attr("transform",  `translate(${margins.left}, ${margins.top})`);
+
+            // Use .call() to add the y-axis gridlines to the <g> tag
+            yGridlinesGroup.call(yGridlines);
+
+            // Create a d3.axisBottom() object for the x-axis
+            const xAxis = d3.axisBottom(xScale);
+
+            // Append a new <g> tag for the x-axis to your SVG and position it
+            const xAxisGroup = chartArea.append("g")
+                                    .attr("transform", `translate(0, ${chartHeight+10})`);//we should also change ygridlinesgroup
+
+            // Use .call() to add the x-axis to the <g> tag
+            xAxisGroup.call(xAxis);
+
+            // Create a second d3.axisBottom() object for x-axis gridlines
+            const xGridlines = d3.axisBottom(xScale)
+                                .tickSize(chartHeight) // Adjust the tick size to cover the chart area
+                                .tickFormat(""); // Remove tick labels
+
+            // Append a new <g> tag for x-axis gridlines with the "gridlines" class
+            const xGridlinesGroup = chartArea.append("g")
+                                        .attr("class", "gridlines")
+                                        .attr("transform", `translate(0, 10)`);
+
+            // Use .call() to add the x-axis gridlines to the <g> tag
+            xGridlinesGroup.call(xGridlines);
+
+            //Using a forEach loop in Javascript, 
+            //create a 3px radius circle for each point in the dataset,
+            //located at its proper place on the chart.
+            data.forEach((d) => {
+                chartArea.append("circle")
+                        .attr("cx", xScale(d["Release Day"]))// Set the x-coordinate using xScale
+                        .attr("cy", yScale(d["Transistors(million)"]))// Set the y-coordinate using yScale
+                        .attr("r", 3)
+                        .attr("fill", "darkblue")
+                        .attr("opacity", 0.3)
+
+
+            })
+
+        });
+
+
+
+
+    </script>
+
+
+
+  </p>
+
+</body>

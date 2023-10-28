@@ -1,0 +1,128 @@
+<html>
+    <head>
+        <title>Homework 2 SVG</title>
+    </head>
+    <body>
+        <h3>
+            Name: Yueyi Yang
+            <br>
+            NetID: yy2225
+        </h3>
+
+        <p>
+            <h4>Problem 1:</h4>
+            Create a 360x360 pixel SVG element. Using a style="" attribute, give it a 1px solid black border. Reproduce this plot using SVG elements:
+            <br>
+            <br>
+            
+            <svg width="360" height="360" style="border: 1px solid black;">
+                <rect x="20" y="20" width="320" height="320" fill="white" stroke="lightgrey" stroke-width="1" />
+
+                <g stroke="lightgrey">
+                    <!-- Horizontal Gridlines -->
+                    <line x1="20" y1="52"  x2="340" y2="52" />
+                    <line x1="20" y1="84"  x2="340" y2="84" />
+                    <line x1="20" y1="116"  x2="340" y2="116" />
+                    <line x1="20" y1="148"  x2="340" y2="148" />
+                    <line x1="20" y1="180"  x2="340" y2="180" />
+                    <line x1="20" y1="212"  x2="340" y2="212" />
+                    <line x1="20" y1="244"  x2="340" y2="244" />
+                    <line x1="20" y1="276"  x2="340" y2="276" />
+                    <line x1="20" y1="308"  x2="340" y2="308" />
+                    <line x1="20" y1="340"  x2="340" y2="340" />
+                    <!-- Add more horizontal gridlines for integers 1 to 10 -->
+
+                     <!-- Vertical Gridlines -->
+                    <line x1="52" y1="20" x2="52" y2="340" />
+                    <line x1="84" y1="20" x2="84" y2="340" />
+                    <line x1="116" y1="20" x2="116" y2="340" />
+                    <line x1="148" y1="20" x2="148" y2="340" />
+                    <line x1="180" y1="20" x2="180" y2="340" />
+                    <line x1="212" y1="20" x2="212" y2="340" />
+                    <line x1="244" y1="20" x2="244" y2="340" />
+                    <line x1="276" y1="20" x2="276" y2="340" />
+                    <line x1="308" y1="20" x2="308" y2="340" />
+                    <!-- Add more vertical gridlines for integers 1 to 10 -->
+
+                </g>
+
+                <circle cx="52" cy="52" r="10" fill="darkturquoise" stroke="lightgreen" stroke-width="1" />
+                <circle cx="68" cy="148" r="10" fill="darkturquoise" stroke="lightgreen" stroke-width="1" />
+                <circle cx="100" cy="212" r="10" fill="darkturquoise" stroke="lightgreen" stroke-width="1" />
+                <circle cx="148" cy="276" r="10" fill="darkturquoise" stroke="lightgreen" stroke-width="1" />
+                <circle cx="180" cy="288" r="10" fill="darkturquoise" stroke="lightgreen" stroke-width="1" />
+                <circle cx="212" cy="263" r="10" fill="darkturquoise" stroke="lightgreen" stroke-width="1" />
+                <circle cx="244" cy="244" r="10" fill="darkturquoise" stroke="lightgreen" stroke-width="1" />
+                <circle cx="276" cy="231" r="10" fill="darkturquoise" stroke="lightgreen" stroke-width="1" />
+                <circle cx="308" cy="224" r="10" fill="darkturquoise" stroke="lightgreen" stroke-width="1" />
+
+            </svg>
+        </p>
+        <br>
+        <p>
+            <h4>
+            Problem 2:
+            </h4>
+            (a) the marks used for each row of data.
+            <br>
+            Answer: 
+            <br>
+            The marks used for each row of data are represented by the <line> elements, which denote the horizontal and vertical gridlines.
+            <br>
+            (b) the two visual channels used in this visualization.
+            <br>
+            Answer: 
+            <br>
+            Fill color (via the fill attribute): This represents the color of the data points, as seen in the <circle> elements.
+            <br>
+            Stroke color (via the stroke attribute): This represents the border color of the data points, also observed in the <circle> elements.
+        </p>
+        <br>
+        <p>
+            <h4>Problem 3:</h4>
+  
+            Use <line> and <rect> elements to create your own version of a Piet Mondrian painting
+                in a 400x400 SVG canvas. Piet Mondrian was an early 20th century artist who, as a member 
+                of the De Stijl movement, reduced his art to three primary colors and black lines in a series 
+                of famous neoplasticist works. Here are some examples: one, two, three. In your own 
+                neoplastic work, you must include at least 6 lines and 3 rectangles. <line> elements must 
+                use a black stroke and <rect> elements must be either white, red, yellow, or blue fill.
+                <rect> elements cannot have a stroke only use a fill for them. If you want black borders, 
+                you must use <line> elements. No other colors will be permitted. You may use any 
+                additional features you feel would add aesthetic value. If you use a tool to generate 
+                coordinates for shapes, please cite that tool. Faithfulness to art history will not be 
+                evaluated. We are not grading based on creativity, but obviously poor or incomplete
+                submissions will be penalized.
+            <br>
+            <br>
+            <svg width="400" height="400" style="border: 1px solid black;">
+                <rect x="0" y="0" width="80" height="80" fill="red" stroke="none"/>
+                <rect x="280" y="50" width="120" height="30" fill="blue" stroke="none"/>
+                <rect x="230" y="80" width="20" height="200" fill="yellow" stroke="none" /> 
+                <rect x="350" y="280" width="50" height="120" fill="red" stroke="none" />
+                <rect x="0" y="390" width="120" height="10" fill="blue" stroke="none" />
+
+               
+
+                <g stroke="black" stroke-width="5">
+                    <line x1="80" y1="0" x2="80" y2="390" />
+                    <line x1="0" y1="80" x2="400" y2="80" />
+                    <line x1="80" y1="50" x2="400" y2="50" />
+                    <line x1="230" y1="80" x2="230" y2="280" />
+                    <line x1="250" y1="80" x2="250" y2="280" />
+                    <line x1="80" y1="280" x2="400" y2="280" />
+                    <line x1="350" y1="280" x2="350" y2="400" />
+                    <line x1="0" y1="390" x2="350" y2="390" />
+                    <line x1="120" y1="390" x2="120" y2="400" />
+                    <line x1="280" y1="50" x2="280" y2="80" />
+
+
+                </g>
+
+            </svg>
+
+
+
+        </p>
+    </body>
+</html>

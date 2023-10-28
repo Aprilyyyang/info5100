@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Homework 7 Choropleth Map of Median Family Income</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://d3js.org/topojson.v3.min.js"></script>
+
+</head>
+<body>
+    <h3>
+        Name: Yueyi Yang
+        <br>
+        NetID: yy2225
+    </h3>
+    <p id = "p1">
+        <strong>Problem 1: Choropleth Map of Median Family Income</strong>
+        <br>
+        The colors I used are "#00008B", "#4169E1", "#87CEEB", "#ADD8E6", "#D9D9D9".
+        <br>
+        The grey means the highest income, while the dark blue means the lowest income.
+        <svg id="choropleth" height="770" width="990" style="margin:20px"></svg>
+
+        <ul id="threshold-list"></ul>
+
+        <script>
+            const loadMapData = async function(){
+                // Load the ny_income.topo.json dataset
+                const nyincome = await d3.json("ny_income.topo.json");
+
+                // Create variables for map features
+                const zips = topojson.feature(nyincome, nyincome.objects.zip_codes);
+                const zipsMesh = topojson.mesh(nyincome, nyincome.objects.zip_codes);
+                const stateMesh = topojson.mesh(nyincome, nyincome.objects.state);
+
+                // Create a d3.geoMercator projection
+                const projection = d3.geoMercator()
+                    .fitSize([990, 770], zips);
+
+                // Create a d3.geoPath path generator using the projection
+                const path = d3.geoPath().projection(projection);
+
+                // Define 5 colors for the sequential scale
+                //const colors = ["#e41a1c", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00"];
+                //const colors = ["#08306b", "#08519c", "#2171b5", "#4292c6", "#D9D9D9"];
+                const colors = ["#00008B", "#4169E1", "#87CEEB", "#ADD8E6", "#D9D9D9"]
+                // Gather all the median_income values from the dataset
+                const incomeValues = nyincome.objects.zip_codes.geometries.map(d => d.properties.median_income);
+
+                // Create a quantile scale with the domain and range
+                const colorScale = d3.scaleQuantile()
+                                    .domain(incomeValues)
+                                    .range(colors)
+
+
+                // Console log the scale's output to check the values
+                console.log(colorScale(incomeValues[0])); // Example: This will return the color for the first value in the dataset
+
+
+
+                // Create a <g> tag in your SVG element to contain map elements
+                const svg = d3.select("#choropleth")
+
+                const mapGroup = svg.append("g")
+
+                //Use a data join to create <path> elements for each zip code in zips.features. Place these 
+                //paths in your <g> tag. Use your quantile scale to set the fill of each path. You can find the 
+                //median_income value within the bonus properties dictionary for each feature. Do not give 
+                //these county paths a stroke.
+
+                // Use a data join to create <path> elements for each zip code in zips.features
+                mapGroup.selectAll("path")
+                        .data(zips.features)
+                        .enter()
+                        .append("path")
+                        .attr("d", path)
+                        .attr("fill", d => colorScale(d.properties.median_income))
+                        .attr("stroke", "none");
+
+                // Create a <path> element for zipsMesh
+                // Use .append().datum() to create a <path> element for zipsMesh. 
+                svg.append("path")
+                    .datum(zipsMesh)
+                    .attr("d", path)
+                    .attr("stroke", "white")
+                    .attr("stroke-width", 1)
+                    .attr("fill", "none");
+
+                // Create a <path> element for stateMesh
+                svg.append("path")
+                    .datum(stateMesh)
+                    .attr("d", path)
+                    .attr("stroke", "darkgrey")
+                    .attr("stroke-width", 3)
+                    .attr("fill", "none");
+
+                // Add a black circle for the Cornell belltower
+                const bellTowerCoordinates = [-76.4850, 42.4476]; // Longitude, Latitude
+
+                // Use your projection to convert latitude and longitude to pixel coordinates
+                const bellTowerPixelCoords = projection(bellTowerCoordinates);
+
+                // Append a black circle to your SVG
+                svg.append("circle")
+                    .attr("cx", bellTowerPixelCoords[0]) // x-coordinate
+                    .attr("cy", bellTowerPixelCoords[1]) // y-coordinate
+                    .attr("r", 5) // radius
+                    .attr("fill", "black");
+
+                // Get the quantile thresholds from your scale
+                const quantileThresholds = colorScale.quantiles();
+
+                // Select the <ul> element by its ID
+                const thresholdList = d3.select("#threshold-list");
+
+                // Bind the threshold data and create list items with formatted numbers
+                thresholdList.selectAll("li")
+                    .data(quantileThresholds)
+                    .enter()
+                    .append("li")
+                    .text(d3.format(",.2f")); // Format the numbers with two decimal places
+
+
+
+
+
+
+
+/*                 // Mouseover Interaction
+
+                // Create a new mesh for interaction
+                const additionalMesh = mapGroup.append("path")
+                    .datum(zipsMesh)
+                    .attr("d", path)
+                    .style("display", "none") // Initially hide it
+                    .attr("stroke", "black")
+                    .attr("stroke-width", 10);
+
+                mapGroup.selectAll("path")
+                    .on("mouseover", function(event, d) {
+                        // Show the additional mesh
+                        additionalMesh.style("display", "block");
+                        
+                        // Get the ZIP code and median income
+                        const zipCode = d.properties.zip_codes;
+                        const medianIncome = d3.format("$,.2f")(d.properties.median_income);
+
+                        // Create a small filled box near the shape
+                        const box = mapGroup.append("rect")
+                            .attr("x", event.pageX)
+                            .attr("y", event.pageY)
+                            .attr("width", 150) // Adjust the dimensions as needed
+                            .attr("height", 50)
+                            .attr("fill", "white")
+                            .attr("stroke", "black")
+                            .attr("stroke-width", 2);
+
+                        // Display the ZIP code and formatted median income inside the box
+                        mapGroup.append("text")
+                            .attr("x", event.pageX + 10) // Adjust the text position
+                            .attr("y", event.pageY + 20)
+                            .text("ZIP Code: " + zipCode)
+                            .attr("font-weight", "bold");
+                        mapGroup.append("text")
+                            .attr("x", event.pageX + 10) // Adjust the text position
+                            .attr("y", event.pageY + 40)
+                            .text("Median Income: " + medianIncome);
+                    })
+
+                    .on("mouseout", function () {
+                        // Hide the additional mesh and remove the box and text
+                        additionalMesh.style("display", "none");
+                        mapGroup.selectAll("rect").remove();
+                        mapGroup.selectAll("text").remove();
+                    });
+
+ */
+            }
+            loadMapData();
+            //console.log(loadMapData())
+
+        </script>
+
+    </p>
+
+</body>
+</html>
